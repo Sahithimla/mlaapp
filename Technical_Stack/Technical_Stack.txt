@@ -6,4 +6,4 @@ SQL Workbench - SQL Query browser
 SLF4J
 Maven 2
 Tomcat 8 
-Github - https://github.com [Sahithimla/mlaapp1234]
+Github - https://github.com [Sahithimla/mlaapp1234] [https://github.com/Sahithimla/mlaapp]
