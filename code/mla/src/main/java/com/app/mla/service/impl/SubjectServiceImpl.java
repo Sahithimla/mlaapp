@@ -57,6 +57,12 @@ public class SubjectServiceImpl implements SubjectService {
 		Subject subject = subjectRepository.findSubjectById(subjectDTO.getId());
 		if (subject != null) {
 			validateSubjectDetails(subjectDTO);
+			if(subjectRepository.findByTitle(subjectDTO.getTitle()) != null) {
+				logger.error("Subject with title '" + subjectDTO.getTitle()
+				+ "' already exists. Please choose a different title");
+				throw new DuplicateRecordException("Subject with title '" + subjectDTO.getTitle()
+				+ "' already exists. Please choose a different title");
+			}
 			subjectRepository.save(EntityMapper.editSubject(subject, subjectDTO));
 		} else {
 			logger.error("Subject does not exists to edit the details");
@@ -122,10 +128,11 @@ public class SubjectServiceImpl implements SubjectService {
 			logger.error("SubjectType is required");
 			throw new BadRequestException("SubjectType is required");
 		}
-		if(StringUtils.isEmpty(subjectDTO.getSubjectTerm())) {
-			logger.error("SubjectTerm is required");
-			throw new BadRequestException("SubjectTerm is required");
-		}
+		/*
+		 * if(StringUtils.isEmpty(subjectDTO.getSubjectTerm())) {
+		 * logger.error("SubjectTerm is required"); throw new
+		 * BadRequestException("SubjectTerm is required"); }
+		 */
 		if(subjectDTO.getInstructorId() == null) {
 			logger.error("Instructor is required");
 			throw new BadRequestException("Instructor is required");
@@ -146,10 +153,11 @@ public class SubjectServiceImpl implements SubjectService {
 			logger.error("EndTime is required");
 			throw new BadRequestException("EndTime is required");
 		}
-		if(StringUtils.isEmpty(subjectDTO.getDuration())) {
-			logger.error("Duration is required");
-			throw new BadRequestException("Duration is required");
-		}
+		/*
+		 * if(StringUtils.isEmpty(subjectDTO.getDuration())) {
+		 * logger.error("Duration is required"); throw new
+		 * BadRequestException("Duration is required"); }
+		 */
 	}
 
 	@Override

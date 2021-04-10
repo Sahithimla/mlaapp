@@ -58,6 +58,12 @@ public class UserServiceImpl implements UserService {
 		User user = userRepository.findUserById(userDTO.getId());
 		if (user != null) {
 			validateUserDetails(userDTO);
+			if(userRepository.findByUserName(userDTO.getUserName()) != null) {
+				logger.error("User with username '" + userDTO.getUserName()
+				+ "' already exists. Please choose a different username");
+				throw new DuplicateRecordException("User with username '" + userDTO.getUserName()
+				+ "' already exists. Please choose a different username");
+			}
 			userRepository.save(EntityMapper.editUser(user, userDTO));
 		} else {
 			logger.error("User does not exists to edit the details");
