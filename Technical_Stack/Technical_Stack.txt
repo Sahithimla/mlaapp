@@ -1,0 +1,9 @@
+Java 8
+Spring Boot 2.4.3
+Spring Data JPA 2.4.3
+MySQL 8
+SQL Workbench - SQL Query browser
+SLF4J
+Maven 2
+Tomcat 8 
+Github - https://github.com [Sahithimla/mlaapp1234]
