@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<!-- <include resource="org/springframework/boot/logging/logback/base.xml"/> -->
+	<property resource="application.properties" />
+	<include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+	<property name="LOG_PATH" value="C:/Sahithi/MLAService/logs"/>​
+	<property name="LOG_FILE" value="mlaservice.log"/>​
+
+
+	<!-- You can override this to have a custom pattern -->
+	<property name="CONSOLE_LOG_PATTERN"
+			  value="%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
+
+	<!-- Appender to log to console -->
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+		</filter>
+		<encoder>
+			<pattern>${CONSOLE_LOG_PATTERN}</pattern>
+			<charset>utf8</charset>
+		</encoder>
+	</appender>
+
+	<!-- Appender to log to file -->​
+	<appender name="flatfile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_PATH}/${LOG_FILE}</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_PATH}/${LOG_FILE}.%d{yyyy-MM-dd}.zip</fileNamePattern>
+			<maxHistory>7</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${CONSOLE_LOG_PATTERN}</pattern>
+			<charset>utf8</charset>
+		</encoder>
+	</appender>
+
+	<appender name="db" class="ch.qos.logback.classic.db.DBAppender">
+		<connectionSource
+				class="ch.qos.logback.core.db.DriverManagerConnectionSource">
+			<driverClass>${spring.datasource.driver-class-name}</driverClass>
+			<url>${spring.datasource.url}</url>
+			<user>${spring.datasource.username}</user>
+			<password>${spring.datasource.password}</password> <!-- no password -->
+		</connectionSource>
+	</appender>
+	​
+	<logger name="org.springframework.web" additivity="false" level="info">
+		<appender-ref ref="console"/>
+		<appender-ref ref="flatfile"/>
+	</logger>
+	
+	<logger name="org.hibernate" additivity="false" level="error">
+		<appender-ref ref="console"/>
+		<appender-ref ref="flatfile"/>
+		<appender-ref ref="db"/>
+	</logger>
+
+
+		<logger name="com.app.mla"  additivity="false" level="debug">
+			<appender-ref ref="console"/>
+			<appender-ref ref="flatfile"/>
+			<appender-ref ref="db"/>
+		</logger>
+
+
+	<logger name="org.springframework.web.filter.CommonsRequestLoggingFilter" additivity="false" level="debug">
+		<appender-ref ref="console"/>
+		<appender-ref ref="flatfile"/>
+		<appender-ref ref="db"/>
+	</logger>
+​
+	<root level="INFO">
+		<appender-ref ref="console"/>
+		<appender-ref ref="flatfile"/>
+	</root>
+
+</configuration>
